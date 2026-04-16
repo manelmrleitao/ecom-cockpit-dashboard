@@ -36,15 +36,28 @@ export async function GET(request: NextRequest) {
     const orders = await shopifyClient.getOrdersWithSource(startDate, endDate, 250)
 
     // Extrair fontes únicas
-    const sourcesSet = new Set<SalesSource>()
+    const sourcesSet = new Set<string>()
 
     for (const order of orders) {
-      const classification = classifySalesSource(
-        order.sourceUrl || '',
-        order.referrerUrl || '',
-        order.userAgent || ''
-      )
-      sourcesSet.add(classification.source)
+      // Priorizar o campo 'source' do Shopify (fonte de aquisição registada)
+      if (order.source) {
+        // O Shopify pode retornar valores como "Google", "Instagram", "(direct)", etc
+        // Normalizar o valor
+        const normalizedSource = order.source
+          .replace(/[()]/g, '') // Remove parênteses
+          .trim()
+        if (normalizedSource && normalizedSource.length > 0) {
+          sourcesSet.add(normalizedSource)
+        }
+      } else {
+        // Fallback: classificar baseado em URLs se o campo source estiver vazio
+        const classification = classifySalesSource(
+          order.sourceUrl || '',
+          order.referrerUrl || '',
+          order.userAgent || ''
+        )
+        sourcesSet.add(classification.source)
+      }
     }
 
     // Converter para array e ordenar
@@ -52,7 +65,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       period,
-      sources,
+      sources: sources.length > 0 ? sources : ['Direct', 'Organic', 'Instagram', 'TikTok', 'Google', 'Unknown'],
       count: sources.length,
       timestamp: new Date().toISOString(),
     })

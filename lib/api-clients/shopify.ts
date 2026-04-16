@@ -116,6 +116,7 @@ export class ShopifyClient extends ApiClient {
           edges {
             node {
               id
+              source
               sourceUrl
               referrerUrl
               userAgent
@@ -126,7 +127,7 @@ export class ShopifyClient extends ApiClient {
                 }
               }
               createdAt
-              customAttributes {
+              attributes {
                 key
                 value
               }
@@ -148,13 +149,14 @@ export class ShopifyClient extends ApiClient {
 
     return (response.data?.data?.orders?.edges || []).map((edge: any) => ({
       id: edge.node.id,
+      source: edge.node.source || '',
       sourceUrl: edge.node.sourceUrl || '',
       referrerUrl: edge.node.referrerUrl || '',
       userAgent: edge.node.userAgent || '',
       totalPrice: parseFloat(edge.node.totalPriceSet?.shopMoney?.amount || 0),
       currency: edge.node.totalPriceSet?.shopMoney?.currencyCode || 'EUR',
       createdAt: edge.node.createdAt.split('T')[0],
-      customAttributes: edge.node.customAttributes || [],
+      attributes: edge.node.attributes || [],
       customer: edge.node.customer
         ? {
             id: edge.node.customer.id,
