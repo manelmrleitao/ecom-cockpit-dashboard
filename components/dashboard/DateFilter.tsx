@@ -8,7 +8,7 @@
 
 import { useState } from 'react'
 
-type DateRange = 'today' | 'yesterday' | 'last7' | 'mtd' | 'custom'
+type DateRange = 'today' | 'yesterday' | 'last7' | 'last30' | 'mtd' | 'custom'
 
 interface DateFilterProps {
   onDateChange?: (range: DateRange, startDate?: string, endDate?: string) => void
@@ -24,15 +24,15 @@ export function DateFilter({ onDateChange }: DateFilterProps) {
   // Get display label for current range
   const getRangeLabel = (): string => {
     const today = new Date()
-    const labels: Record<DateRange | 'last30', string> = {
+    const labels: Record<DateRange, string> = {
       'today': 'Hoje',
       'yesterday': 'Ontem',
       'last7': 'Últimos 7 dias',
+      'last30': 'Últimos 30 dias',
       'mtd': 'Este mês',
       'custom': 'Datas customizadas',
-      'last30': 'Últimos 30 dias',
     }
-    return labels[activeRange as DateRange | 'last30'] || 'Período'
+    return labels[activeRange] || 'Período'
   }
 
   const handleRangeSelect = (range: DateRange) => {

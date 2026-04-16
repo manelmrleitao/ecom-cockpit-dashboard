@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { refreshGoogleAccessToken } from '@/lib/utils/google-auth'
 import { getPeriodDateRange } from '@/lib/utils/date-helpers'
 import { GoogleAdsClient } from '@/lib/api-clients/google-ads'
+import { MOCK_30_DAYS_DATA } from '@/lib/mock-data'
 
 interface GoogleAdsMetrics {
   campaigns: number
@@ -32,22 +33,28 @@ export async function GET(request: NextRequest) {
 
   // Check if credentials are configured
   if (!customerId || !developerToken || !clientId || !clientSecret || !refreshToken) {
-    const missingCredentials = [
-      !customerId && 'GOOGLE_ADS_CUSTOMER_ID',
-      !developerToken && 'GOOGLE_ADS_DEVELOPER_TOKEN',
-      !clientId && 'GOOGLE_ADS_CLIENT_ID',
-      !clientSecret && 'GOOGLE_ADS_CLIENT_SECRET',
-      !refreshToken && 'GOOGLE_ADS_REFRESH_TOKEN',
-    ].filter(Boolean)
+    // Return mock data for demo/development
+    const mockData = MOCK_30_DAYS_DATA.googleAds.daily
+    const totalSpend = mockData.reduce((sum, d) => sum + d.spend, 0)
+    const totalImpressions = mockData.reduce((sum, d) => sum + d.impressions, 0)
+    const totalClicks = mockData.reduce((sum, d) => sum + d.clicks, 0)
+    const totalConversions = mockData.reduce((sum, d) => sum + d.conversions, 0)
+    const totalConversionValue = mockData.reduce((sum, d) => sum + d.conversionValue, 0)
 
-    return NextResponse.json(
-      {
-        error: 'Google Ads credentials not configured',
-        message: `Missing environment variables: ${missingCredentials.join(', ')}`,
-        missingCredentials,
-      },
-      { status: 503 }
-    )
+    const mockMetrics: GoogleAdsMetrics = {
+      campaigns: 8, // Mocked number of campaigns
+      spend: Math.round(totalSpend * 100) / 100,
+      clicks: totalClicks,
+      impressions: totalImpressions,
+      conversions: totalConversions,
+      conversionValue: Math.round(totalConversionValue * 100) / 100,
+      cpc: Math.round((totalSpend / totalClicks) * 100) / 100,
+      roas: Math.round((totalConversionValue / totalSpend) * 100) / 100,
+      currency: 'USD',
+      isMock: true,
+    }
+
+    return NextResponse.json(mockMetrics)
   }
 
   try {

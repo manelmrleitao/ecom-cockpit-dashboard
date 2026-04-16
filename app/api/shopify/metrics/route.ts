@@ -5,6 +5,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getPeriodDateRange } from '@/lib/utils/date-helpers'
+import { MOCK_30_DAYS_DATA } from '@/lib/mock-data'
 
 interface ShopifyOrder {
   id: string
@@ -34,19 +35,25 @@ export async function GET(request: NextRequest) {
 
   // Check if credentials are configured
   if (!storeUrl || !apiToken) {
-    const missingCredentials = [
-      !storeUrl && 'SHOPIFY_STORE_URL',
-      !apiToken && 'SHOPIFY_API_TOKEN',
-    ].filter(Boolean)
+    // Return mock data for demo/development
+    const mockData = MOCK_30_DAYS_DATA.shopify.daily
+    const totalOrders = mockData.reduce((sum, d) => sum + d.orders, 0)
+    const totalRevenue = mockData.reduce((sum, d) => sum + d.revenue, 0)
+    const totalCustomers = mockData.reduce((sum, d) => sum + d.customers, 0)
+    const totalReturning = mockData.reduce((sum, d) => sum + d.returning, 0)
 
-    return NextResponse.json(
-      {
-        error: 'Shopify credentials not configured',
-        message: `Missing environment variables: ${missingCredentials.join(', ')}`,
-        missingCredentials,
-      },
-      { status: 503 }
-    )
+    const mockMetrics: ShopifyMetrics = {
+      orders: totalOrders,
+      revenue: Math.round(totalRevenue * 100) / 100,
+      averageOrderValue: Math.round((totalRevenue / totalOrders) * 100) / 100,
+      uniqueCustomers: totalCustomers,
+      uniqueReturningCustomers: totalReturning,
+      customerReturnRate: Math.round((totalReturning / totalCustomers) * 100 * 100) / 100,
+      currency: 'EUR',
+      isMock: true,
+    }
+
+    return NextResponse.json(mockMetrics)
   }
 
   try {

@@ -1,14 +1,32 @@
 # 📦 COMPACT - Ecom Cockpit Dashboard
 
-**Última atualização:** 2026-04-14 (22:10)  
-**Status do Projeto:** ✅ **SHOPIFY 100% + META ADS 100%** | Google Ads Setup Pronto 🔵  
-**Status do Servidor Local:** ✅ **FUNCIONANDO em localhost:3004** | ✅ **Dados reais + Filtros interativos + Insights automáticos**
+**Última atualização:** 2026-04-16 (09:45)  
+**Status do Projeto:** ✅ **SHOPIFY 100% + META ADS 100% + GITHUB PRONTO** | Google Ads Setup Pronto 🔵  
+**Status do Servidor Local:** ✅ **FUNCIONANDO em localhost:3000** | ✅ **Dados reais + Filtros interativos + Insights automáticos**  
+**GitHub:** ✅ **https://github.com/manelmrleitao/ecom-cockpit-dashboard**
 
 ---
 
 ## 📍 Estado Atual do Projeto
 
-### ✅ Concluído (Esta Sessão)
+### ✅ GitHub & Deployment (2026-04-16)
+
+**GitHub:**
+- ✅ Repositório criado: `ecom-cockpit-dashboard`
+- ✅ Código pushed com sucesso (secrets removidos do histórico)
+- ✅ Git history limpo (9 ficheiros de teste/debug removidos)
+- 🔵 **PRÓXIMO: Deploy no Vercel** (5 minutos)
+  - Acede a https://vercel.com/new
+  - Importa repositório GitHub
+  - Clica "Deploy" (sem env vars necessárias para mock data)
+  - Vercel dá link público para partilhar
+
+**Funcionalities Pronta para Demo:**
+- ✅ Dashboard com mock data 100% funcional
+- ✅ Todos os gráficos, filtros e componentes interativos
+- ✅ Simula dados reais de Shopify, Meta, Google Ads, TikTok
+
+### ✅ Concluído (Sessões Anteriores)
 
 1. **Remoção de Mock Data**
    - ❌ Sem mais fallback para dados fake
@@ -96,12 +114,11 @@
 
 | # | Tarefa | Tempo | Status |
 |---|--------|-------|--------|
-| 1 | **✅ VALIDAÇÃO: Shopify 100% Funcional** | ✅ CONCLUÍDO | ✅ **CONCLUÍDO** |
-| 2 | **✅ SUGESTÕES RÁPIDAS: Top 3 + Expandir 2** | ✅ CONCLUÍDO | ✅ **CONCLUÍDO** |
-| 3 | **✅ VALIDAÇÃO: Meta Ads 100% Funcional** | ✅ CONCLUÍDO | ✅ **CONCLUÍDO** |
-| 4 | **PRÓXIMO: Configurar Google Ads** | 20 min | 🔵 **PRONTO PARA SETUP** |
-| 5 | Configurar TikTok Ads (opcional) | 10 min | ⚪ Depois |
-| 6 | Configurar Pinterest (opcional) | 10 min | ⚪ Depois |
+| 1 | **✅ GitHub Repository + Push** | ✅ CONCLUÍDO | ✅ **CONCLUÍDO** |
+| 2 | **PRÓXIMO: Deploy no Vercel** | 5 min | 🔵 **PRONTO PARA DEPLOY** |
+| 3 | Configurar Google Ads (com credenciais reais) | 20 min | ⚪ Depois |
+| 4 | Configurar TikTok Ads (opcional) | 10 min | ⚪ Depois |
+| 5 | Configurar Pinterest (opcional) | 10 min | ⚪ Depois |
 
 **📌 Google Ads Setup:**
 - ✅ Infraestrutura pronta (routes, OAuth, client)
@@ -123,48 +140,28 @@
 
 ---
 
-## 🔄 STATUS ATUAL - Aguardando Meta Ads Token Novo
+## 🚀 DEPLOY NO VERCEL (Próximo Passo)
 
-### ✅ CORRIGIDO NESTA SESSÃO (2026-04-13 20:30)
+### ⚡ Quick Deploy (5 minutos)
 
-1. **NEXT_PUBLIC_APP_URL - CORRIGIDO**
-   - Anterior: `http://localhost:3005` ❌ (incompatível com servidor)
-   - Agora: `http://localhost:3004` ✅ (porta correta)
-   - Impacto: Dashboard KPIs consolidation agora chama endpoints corretamente
-   - Resultado: Dashboard carrega sem erros de conexão
+**Comando Manual (opcional):**
+```bash
+npm run build  # Verifica que build passa
+git push       # Push para GitHub (já feito)
+```
 
-2. **Configuração de Credenciais**
-   - Shopify: ✅ Totalmente funcional com dados reais
-   - Meta Ads: ⏳ Temporariamente desabilitado (TOKEN comentado)
-   - Google Ads: ⚪ Configurado com placeholders (próximo após Meta)
+**Vercel Deploy:**
+1. Acede a https://vercel.com/new
+2. Seleciona repositório GitHub: `manelmrleitao/ecom-cockpit-dashboard`
+3. Clica "Deploy" (SEM adicionar environment variables!)
+4. Espera ~2 minutos
+5. Vercel dá um link: `https://seu-dashboard.vercel.app`
 
-### ⏳ CRÍTICO: Problema com Meta Ads Token (Investigação em Curso)
-
-**Status:** ❌ Múltiplos tokens testados, todos retornam "Cannot parse access token"
-
-**Tokens testados (2026-04-13):**
-1. `EAAL5t2X6gTg...` - ❌ "Invalid OAuth access token"
-2. `EAAYIsIInmA4...` (enviado 2x) - ❌ "Invalid OAuth access token"
-3. `EAAYIsIInmA4BRMe8ZAx8...` (novo) - ❌ "Invalid OAuth access token"
-
-**Causa Provável - NÃO é o token:**
-- App "Ecom Dashboard" pode não estar correctamente configurada
-- Marketing API pode não estar ativado
-- Account Meta pode não ter permissões para usar API
-- User pode não ser Admin da Business Account
-
-**Verificação em curso (2026-04-13 20:45):**
-- Utilizador verificando App Settings em https://developers.facebook.com
-- Página: App Dashboard > App ID XXXX > Settings
-- Itens a verificar:
-  - ✅ Marketing API está ativado?
-  - ✅ Ad Account está adicionado?
-  - ✅ User é Admin da app?
-
-**Próximos passos:**
-1. Completar verificação de App Settings
-2. Se tudo OK → Gerar novo token após confirmar permissões
-3. Se falhar → Possível reconfiguração completa da app ou uso de System User Token
+**Resultado:**
+- Dashboard 100% funcional com mock data
+- Todos os gráficos, filtros e insights interativos
+- Pronto para partilhar com clientes/investidores
+- Sem custos (free Vercel tier)
 
 ---
 
@@ -284,9 +281,9 @@ npm run lint
 ```
 
 ### Acessar Páginas
-- Dashboard: `http://localhost:3005/dashboard`
-- Setup Guide: `http://localhost:3005/dashboard/setup-guide`
-- API Meta Ads: `http://localhost:3005/api/meta-ads/metrics?period=last30`
+- Dashboard: `http://localhost:3000/dashboard`
+- Setup Guide: `http://localhost:3000/dashboard/setup-guide`
+- API Meta Ads: `http://localhost:3000/api/meta-ads/metrics?period=last30`
 
 ---
 
@@ -395,7 +392,7 @@ PINTEREST_ADS_ACCOUNT_ID=xxx
 3. Guarda: `Client ID` e `Client Secret`
 
 #### Passo 3: Refresh Token
-1. Acede a `http://localhost:3005/api/auth/google/callback`
+1. Acede a `http://localhost:3000/api/auth/google/callback`
 2. Segue o fluxo OAuth
 3. Copia o `refresh_token`
 
@@ -467,20 +464,20 @@ GOOGLE_ADS_DEVELOPER_TOKEN=ca~xxx
 ### Via Terminal
 ```bash
 # Meta Ads
-curl http://localhost:3005/api/meta-ads/metrics
+curl http://localhost:3000/api/meta-ads/metrics
 
 # Google Ads
-curl http://localhost:3005/api/google-ads/metrics
+curl http://localhost:3000/api/google-ads/metrics
 
 # Shopify
-curl http://localhost:3005/api/shopify/metrics
+curl http://localhost:3000/api/shopify/metrics
 
 # KPIs Consolidados
-curl http://localhost:3005/api/dashboard/kpis
+curl http://localhost:3000/api/dashboard/kpis
 ```
 
 ### Via Dashboard
-1. Acede a `http://localhost:3005/dashboard`
+1. Acede a `http://localhost:3000/dashboard`
 2. Verifica os avisos:
    - 🟢 Verde = Plataforma funcionando
    - 🔴 Vermelho = Erro (mostra mensagem)
@@ -515,16 +512,15 @@ curl http://localhost:3005/api/dashboard/kpis
 
 ## 🎯 Próximas Ações
 
-**AGORA (2026-04-14):**
-1. ✅ Shopify 100% funcionando
-2. ✅ Meta Ads 100% funcionando
-3. ✅ QuickSuggestions com data-driven insights
-4. 🔵 **PRÓXIMO: Configurar Google Ads** → Seguir guia em `SETUP_GOOGLE_ADS.md` (20 min)
+**AGORA (2026-04-16):**
+1. ✅ GitHub repositório criado
+2. ✅ Código pushed com sucesso (secrets removidos)
+3. 🔵 **PRÓXIMO: Deploy no Vercel** (5 min) → Seguir secção acima
 
 **DEPOIS:**
+4. Configurar Google Ads com credenciais reais (20 min, opcional)
 5. Configurar TikTok Ads (10 min, opcional)
 6. Configurar Pinterest (10 min, opcional)
-7. Deploy em produção (Vercel)
 
 ---
 
