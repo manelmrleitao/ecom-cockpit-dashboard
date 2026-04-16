@@ -1,0 +1,39 @@
+{
+  "name": "ecom-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Dashboard de KPIs em tempo real - Shopify, Google Ads, Meta Ads",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "setup-apis": "node scripts/setup-apis.js",
+    "lint": "eslint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "type-check": "tsc --noEmit",
+    "test": "echo \"Tests not configured yet\""
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
+    "@tanstack/react-query": "^5.29.0",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^4.2.1",
+    "lucide-react": "^1.8.0",
+    "next": "16.2.3",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "recharts": "^2.10.3",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.3",
+    "prettier": "^3.1.1",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
