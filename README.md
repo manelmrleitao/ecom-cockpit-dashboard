@@ -63,3 +63,4 @@ npm run type-check  # Verificar tipos
 ---
 
 **Desenvolvido com ❤️ usando Next.js e TypeScript**
+# ecom-cockpit-dashboard
