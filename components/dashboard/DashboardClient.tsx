@@ -247,6 +247,7 @@ export function DashboardClient({
 
   // Inicializar selectedPlatforms com todas as plataformas disponíveis
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([])
+  const [selectedSources, setSelectedSources] = useState<string[]>([])
   const [selectedPeriod, setSelectedPeriod] = useState<string>('last7')
   const [customDateRange, setCustomDateRange] = useState<{ start?: string; end?: string }>({})
   const [isLoadingPeriod, setIsLoadingPeriod] = useState(false)
@@ -373,8 +374,8 @@ export function DashboardClient({
         <div className="flex flex-col gap-3 py-4 px-4 bg-gradient-to-r from-blue-50 to-purple-50 border border-purple-200 rounded-lg">
           {/* Acquisition Source Filter */}
           <AcquisitionSourceFilter
-            selectedSources={selectedPlatforms}
-            onSourceChange={setSelectedPlatforms}
+            selectedSources={selectedSources}
+            onSourceChange={setSelectedSources}
             period={selectedPeriod}
           />
 
@@ -633,7 +634,7 @@ export function DashboardClient({
 
         {/* Sales Sources */}
         <div className="mt-8">
-          <SalesSources period={selectedPeriod} />
+          <SalesSources period={selectedPeriod} selectedSources={selectedSources} />
         </div>
       </div>
     </>

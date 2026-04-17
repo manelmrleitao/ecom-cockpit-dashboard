@@ -5,9 +5,10 @@ import type { SalesSourceData } from '@/lib/utils/sales-source-classifier'
 
 interface SalesSourcesProps {
   period: string
+  selectedSources?: string[]
 }
 
-export function SalesSources({ period }: SalesSourcesProps) {
+export function SalesSources({ period, selectedSources = [] }: SalesSourcesProps) {
   const [data, setData] = useState<SalesSourceData[]>([])
   const [summary, setSummary] = useState({ totalRevenue: 0, totalOrders: 0, averageOrderValue: 0 })
   const [loading, setLoading] = useState(true)
@@ -78,13 +79,31 @@ export function SalesSources({ period }: SalesSourcesProps) {
     )
   }
 
-  if (!data || data.length === 0) {
+  // Filtrar dados baseado em selectedSources
+  const filteredData = selectedSources && selectedSources.length > 0
+    ? data.filter((item) => selectedSources.includes(item.source))
+    : data
+
+  if (!filteredData || filteredData.length === 0) {
     return (
       <div className="rounded-2xl border border-purple-200 bg-gradient-to-r from-purple-50 to-pink-50 p-6 shadow-sm">
         <h3 className="text-lg font-bold text-gray-900 mb-4">📊 Vendas por Fonte</h3>
-        <p className="text-center text-gray-600 py-8">Sem dados disponíveis para este período.</p>
+        <p className="text-center text-gray-600 py-8">
+          {selectedSources && selectedSources.length > 0
+            ? 'Nenhuma venda nas fontes selecionadas.'
+            : 'Sem dados disponíveis para este período.'}
+        </p>
       </div>
     )
+  }
+
+  // Recalcular sumário baseado em dados filtrados
+  const filteredSummary = {
+    totalRevenue: filteredData.reduce((sum, item) => sum + item.revenue, 0),
+    totalOrders: filteredData.reduce((sum, item) => sum + item.orders, 0),
+    averageOrderValue: filteredData.length > 0
+      ? filteredData.reduce((sum, item) => sum + item.revenue, 0) / filteredData.reduce((sum, item) => sum + item.orders, 0)
+      : 0,
   }
 
   return (
@@ -95,21 +114,21 @@ export function SalesSources({ period }: SalesSourcesProps) {
       <div className="grid grid-cols-3 gap-3 mb-6">
         <div className="bg-white border border-purple-200 rounded-lg p-3">
           <p className="text-xs text-gray-600 font-semibold">Receita Total</p>
-          <p className="text-xl font-bold text-gray-900">€{summary.totalRevenue.toLocaleString('pt-PT', { maximumFractionDigits: 0 })}</p>
+          <p className="text-xl font-bold text-gray-900">€{filteredSummary.totalRevenue.toLocaleString('pt-PT', { maximumFractionDigits: 0 })}</p>
         </div>
         <div className="bg-white border border-purple-200 rounded-lg p-3">
           <p className="text-xs text-gray-600 font-semibold">Pedidos</p>
-          <p className="text-xl font-bold text-gray-900">{summary.totalOrders.toLocaleString()}</p>
+          <p className="text-xl font-bold text-gray-900">{filteredSummary.totalOrders.toLocaleString()}</p>
         </div>
         <div className="bg-white border border-purple-200 rounded-lg p-3">
           <p className="text-xs text-gray-600 font-semibold">Ticket Médio</p>
-          <p className="text-xl font-bold text-gray-900">€{summary.averageOrderValue.toLocaleString('pt-PT', { maximumFractionDigits: 0 })}</p>
+          <p className="text-xl font-bold text-gray-900">€{filteredSummary.averageOrderValue.toLocaleString('pt-PT', { maximumFractionDigits: 0 })}</p>
         </div>
       </div>
 
       {/* Sources Table */}
       <div className="space-y-2">
-        {data.map((item) => (
+        {filteredData.map((item) => (
           <div key={item.source} className="bg-white border border-purple-200 rounded-lg p-4 hover:shadow-md transition">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
