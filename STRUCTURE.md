@@ -73,6 +73,37 @@ Este documento mapeia a estrutura, componentes, tipos de informação **e lógic
        }}
      />
      ```
+  
+  3. **AcquisitionSourceFilter** - Filtro de fontes de aquisição (dinâmico por período)
+     - **UI:** Botão dropdown "🎯 Fontes de Aquisição" com multi-select
+     - **Opções:** Variam dinamicamente por período (ex: "Organic", "Instagram", "TikTok", "Direct", etc)
+     - **Comportamento Dinâmico:**
+       - Se num período não houve vendas de uma fonte → essa fonte **não aparece** no filtro
+       - Ex: Março sem vendas orgânicas → "Organic" desaparece do filtro de março
+       - Quando muda período → filtro refetch e mostra apenas fontes com vendas
+     
+     - **Dados:** 
+       - Endpoint: `/api/shopify/acquisition-sources?period=XXX`
+       - Retorna: Array de fontes que tiveram vendas naquele período
+       - **Fonte:** Campo `source` do Shopify (registado onde a venda acontece)
+     
+     - **Lógica:**
+       ```typescript
+       // Fetch sources quando período muda
+       useEffect(() => {
+         fetch(`/api/shopify/acquisition-sources?period=${period}`)
+         // Refetch → atualiza opções disponíveis
+       }, [period])
+       ```
+     
+     - **Por quê:** 
+       - Evita confusão com fontes inativas
+       - Apenas mostra opções relevantes/úteis para o período
+       - Reflete automaticamente o que realmente teve vendas
+     
+     - **Impacto:** 
+       - Filtra dados em gráficos e tabelas por fonte selecionada
+       - Se "Instagram" selecionado → mostra só vendas do Instagram
 
 ### 3. 💡 Principais Insights (QuickSuggestions)
 - **Tipo:** Alert cards com priorização
